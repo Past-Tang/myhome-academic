@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学术主页管理后台</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #64748b;
+            --success-color: #059669;
+            --warning-color: #d97706;
+            --danger-color: #dc2626;
+            --light-gray: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-gray);
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%);
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .sidebar {
+            background: white;
+            min-height: 100vh;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 0;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: var(--primary-color);
+            color: white;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-nav {
+            padding: 20px 0;
+        }
+
+        .sidebar-nav .nav-link {
+            color: var(--secondary-color);
+            padding: 12px 20px;
+            border: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-nav .nav-link:hover,
+        .sidebar-nav .nav-link.active {
+            background-color: var(--light-gray);
+            color: var(--primary-color);
+        }
+
+        .sidebar-nav .nav-link i {
+            width: 20px;
+            margin-right: 10px;
+        }
+
+        .main-content {
+            padding: 0;
+        }
+
+        .content-header {
+            background: white;
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .content-body {
+            padding: 30px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 25px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border-color: var(--danger-color);
+        }
+
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            background-color: var(--light-gray);
+        }
+
+        .modal-header {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1) grayscale(100%) brightness(200%);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .stats-label {
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .preview-image {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .markdown-help {
+            font-size: 0.875rem;
+            color: var(--secondary-color);
+            background-color: var(--light-gray);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="login-container" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <h2>管理后台登录</h2>
+                <p class="text-muted">请输入管理员账号和密码</p>
+            </div>
+            <form id="login-form">
+                <div class="mb-3">
+                    <label for="username" class="form-label">用户名</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">密码</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <div class="mb-3">
+                    <label for="captcha" class="form-label">验证码</label>
+                    <div class="row">
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="captcha" placeholder="请输入验证码" required>
+                        </div>
+                        <div class="col-4">
+                            <img id="captcha-image" src="" alt="验证码" style="width: 100%; height: 38px; cursor: pointer; border: 1px solid #ddd; border-radius: 4px;" onclick="refreshCaptcha()">
+                            <div id="captcha-text" style="display: none; font-family: monospace; font-size: 18px; font-weight: bold; text-align: center; line-height: 38px; border: 1px solid #ddd; border-radius: 4px;"></div>
+                        </div>
+                    </div>
+                    <small class="text-muted">点击验证码图片可刷新</small>
+                </div>
+                <div class="mb-3" id="login-error" style="display: none;">
+                    <div class="alert alert-danger" role="alert">
+                        用户名或密码错误
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">登录</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-container" class="container-fluid" style="display: none;">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="sidebar-header">
+                    <h5 class="mb-0">管理后台</h5>
+                    <small id="welcome-user"></small>
+                </div>
+                <div class="sidebar-nav">
+                    <nav class="nav nav-pills flex-column">
+                        <a class="nav-link active" data-section="dashboard">
+                            <i class="fas fa-tachometer-alt"></i>
+                            仪表板
+                        </a>
+                        <a class="nav-link" data-section="profile">
+                            <i class="fas fa-user"></i>
+                            个人信息
+                        </a>
+                        <a class="nav-link" data-section="publications">
+                            <i class="fas fa-book"></i>
+                            学术成果
+                        </a>
+                        <a class="nav-link" data-section="projects">
+                            <i class="fas fa-project-diagram"></i>
+                            项目经历
+                        </a>
+                        <a class="nav-link" data-section="experience">
+                            <i class="fas fa-briefcase"></i>
+                            工作经历
+                        </a>
+                        <a class="nav-link" data-section="education">
+                            <i class="fas fa-graduation-cap"></i>
+                            教育背景
+                        </a>
+                        <a class="nav-link" data-section="awards">
+                            <i class="fas fa-trophy"></i>
+                            荣誉奖项
+                        </a>
+                        <a class="nav-link" data-section="friends">
+                            <i class="fas fa-link"></i>
+                            友情链接
+                        </a>
+                        <a class="nav-link" data-section="settings">
+                            <i class="fas fa-cog"></i>
+                            系统设置
+                        </a>
+                        <a class="nav-link text-danger" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            退出登录
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <div class="content-header">
+                    <h4 id="section-title">仪表板</h4>
+                    <div>
+                        <a href="/" target="_blank" class="btn btn-outline-primary btn-sm me-2">
+                            <i class="fas fa-eye"></i> 预览网站
+                        </a>
+                    </div>
+                </div>
+                <div class="content-body">
+                    <!-- Dashboard Section -->
+                    <div id="dashboard-section" class="content-section">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <div class="stats-number" id="stats-publications">0</div>
+                                    <div class="stats-label">学术成果</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <div class="stats-number" id="stats-projects">0</div>
+                                    <div class="stats-label">项目经历</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <div class="stats-number" id="stats-experience">0</div>
+                                    <div class="stats-label">工作经历</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stats-card text-center">
+                                    <div class="stats-number" id="stats-awards">0</div>
+                                    <div class="stats-label">荣誉奖项</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            欢迎使用学术主页管理后台！您可以在这里管理所有的学术信息。使用左侧菜单切换不同的管理模块。
+                        </div>
+                    </div>
+
+                    <!-- Profile Section -->
+                    <div id="profile-section" class="content-section" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">个人信息管理</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="profile-form">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-name" class="form-label">姓名</label>
+                                                <input type="text" class="form-control" id="profile-name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-title" class="form-label">职位/头衔</label>
+                                                <input type="text" class="form-control" id="profile-title">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-bio" class="form-label">个人简介</label>
+                                        <textarea class="form-control" id="profile-bio" rows="4"></textarea>
+                                        <div class="markdown-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            支持Markdown语法：**粗体** *斜体* [链接](URL) `代码` 等
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-research" class="form-label">研究方向</label>
+                                        <input type="text" class="form-control" id="profile-research" placeholder="多个方向请用逗号分隔">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-email" class="form-label">邮箱</label>
+                                                <input type="email" class="form-control" id="profile-email">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-phone" class="form-label">电话</label>
+                                                <input type="text" class="form-control" id="profile-phone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-address" class="form-label">地址</label>
+                                        <input type="text" class="form-control" id="profile-address">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-website" class="form-label">个人网站</label>
+                                                <input type="url" class="form-control" id="profile-website">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-github" class="form-label">GitHub</label>
+                                                <input type="url" class="form-control" id="profile-github">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-linkedin" class="form-label">LinkedIn</label>
+                                                <input type="url" class="form-control" id="profile-linkedin">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="profile-orcid" class="form-label">ORCID</label>
+                                                <input type="url" class="form-control" id="profile-orcid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="profile-avatar" class="form-label">头像上传</label>
+                                        <input type="file" class="form-control" id="profile-avatar" accept="image/*">
+                                        <div id="avatar-preview" class="mt-2"></div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">保存个人信息</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Publications Section -->
+                    <div id="publications-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>学术成果管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#publicationModal" onclick="openPublicationModal()">
+                                <i class="fas fa-plus"></i> 添加论文
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="publications-table">
+                                        <thead>
+                                            <tr>
+                                                <th>标题</th>
+                                                <th>作者</th>
+                                                <th>期刊</th>
+                                                <th>年份</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projects Section -->
+                    <div id="projects-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>项目经历管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal" onclick="openProjectModal()">
+                                <i class="fas fa-plus"></i> 添加项目
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="projects-table">
+                                        <thead>
+                                            <tr>
+                                                <th>项目名称</th>
+                                                <th>角色</th>
+                                                <th>开始时间</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience Section -->
+                    <div id="experience-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>工作经历管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#experienceModal" onclick="openExperienceModal()">
+                                <i class="fas fa-plus"></i> 添加工作经历
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="experience-table">
+                                        <thead>
+                                            <tr>
+                                                <th>职位</th>
+                                                <th>机构</th>
+                                                <th>开始时间</th>
+                                                <th>结束时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Education Section -->
+                    <div id="education-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>教育背景管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#educationModal" onclick="openEducationModal()">
+                                <i class="fas fa-plus"></i> 添加教育经历
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="education-table">
+                                        <thead>
+                                            <tr>
+                                                <th>学位</th>
+                                                <th>院校</th>
+                                                <th>专业</th>
+                                                <th>年份</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Awards Section -->
+                    <div id="awards-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>荣誉奖项管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#awardModal" onclick="openAwardModal()">
+                                <i class="fas fa-plus"></i> 添加奖项
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="awards-table">
+                                        <thead>
+                                            <tr>
+                                                <th>奖项名称</th>
+                                                <th>颁发机构</th>
+                                                <th>年份</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Friends Section -->
+                    <div id="friends-section" class="content-section" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5>友情链接管理</h5>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#friendModal" onclick="openFriendModal()">
+                                <i class="fas fa-plus"></i> 添加链接
+                            </button>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table" id="friends-table">
+                                        <thead>
+                                            <tr>
+                                                <th>名称</th>
+                                                <th>链接</th>
+                                                <th>描述</th>
+                                                <th>状态</th>
+                                                <th>操作</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div id="settings-section" class="content-section" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">系统设置</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="settings-form">
+                                    <div class="mb-3">
+                                        <label for="site-title" class="form-label">网站标题</label>
+                                        <input type="text" class="form-control" id="site-title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="site-description" class="form-label">网站描述</label>
+                                        <textarea class="form-control" id="site-description" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="keywords" class="form-label">关键词</label>
+                                        <input type="text" class="form-control" id="keywords" placeholder="多个关键词请用逗号分隔">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="beian" class="form-label">备案信息</label>
+                                        <input type="text" class="form-control" id="beian" placeholder="例如：京ICP备12345678号-1">
+                                        <div class="form-text">将显示在页面底部</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="analytics-code" class="form-label">统计代码</label>
+                                        <textarea class="form-control" id="analytics-code" rows="4" placeholder="Google Analytics 或其他统计代码"></textarea>
+                                        <div class="form-text">将插入到页面head部分</div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">保存设置</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Publication Modal -->
+    <div class="modal fade" id="publicationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">论文信息</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="publication-form">
+                        <input type="hidden" id="pub-id">
+                        <div class="mb-3">
+                            <label for="pub-title" class="form-label">标题</label>
+                            <input type="text" class="form-control" id="pub-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pub-authors" class="form-label">作者</label>
+                            <input type="text" class="form-control" id="pub-authors" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-journal" class="form-label">期刊/会议</label>
+                                    <input type="text" class="form-control" id="pub-journal">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-year" class="form-label">年份</label>
+                                    <input type="number" class="form-control" id="pub-year">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-volume" class="form-label">卷号</label>
+                                    <input type="text" class="form-control" id="pub-volume">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-pages" class="form-label">页码</label>
+                                    <input type="text" class="form-control" id="pub-pages">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-doi" class="form-label">DOI</label>
+                                    <input type="text" class="form-control" id="pub-doi">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="pub-url" class="form-label">URL</label>
+                                    <input type="url" class="form-control" id="pub-url">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pub-abstract" class="form-label">摘要</label>
+                            <textarea class="form-control" id="pub-abstract" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="pub-keywords" class="form-label">关键词</label>
+                            <input type="text" class="form-control" id="pub-keywords" placeholder="多个关键词请用逗号分隔">
+                        </div>
+                        <div class="mb-3">
+                            <label for="pub-type" class="form-label">类型</label>
+                            <select class="form-select" id="pub-type">
+                                <option value="journal">期刊论文</option>
+                                <option value="conference">会议论文</option>
+                                <option value="book">著作</option>
+                                <option value="patent">专利</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="savePublication()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="modal fade" id="projectModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">项目信息</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="project-form">
+                        <input type="hidden" id="proj-id">
+                        <div class="mb-3">
+                            <label for="proj-title" class="form-label">项目名称</label>
+                            <input type="text" class="form-control" id="proj-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-description" class="form-label">项目描述</label>
+                            <textarea class="form-control" id="proj-description" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-role" class="form-label">担任角色</label>
+                            <input type="text" class="form-control" id="proj-role">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="proj-start" class="form-label">开始时间</label>
+                                    <input type="date" class="form-control" id="proj-start">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="proj-end" class="form-label">结束时间</label>
+                                    <input type="date" class="form-control" id="proj-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-tech" class="form-label">技术栈</label>
+                            <input type="text" class="form-control" id="proj-tech" placeholder="多个技术请用逗号分隔">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="proj-url" class="form-label">项目链接</label>
+                                    <input type="url" class="form-control" id="proj-url">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="proj-github" class="form-label">GitHub链接</label>
+                                    <input type="url" class="form-control" id="proj-github">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-detailed-description" class="form-label">详细描述（支持Markdown）</label>
+                            <textarea class="form-control" id="proj-detailed-description" rows="8" placeholder="项目的详细技术描述，支持Markdown语法"></textarea>
+                            <div class="form-text">此内容会在项目详情弹出层中显示，支持Markdown格式</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-tags" class="form-label">项目标签</label>
+                            <input type="text" class="form-control" id="proj-tags" placeholder="多个标签请用逗号分隔，如：人工智能,深度学习,NLP">
+                            <div class="form-text">标签会在项目卡片上显示</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="proj-status" class="form-label">状态</label>
+                            <select class="form-select" id="proj-status">
+                                <option value="completed">已完成</option>
+                                <option value="ongoing">进行中</option>
+                                <option value="suspended">暂停</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProject()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Experience Modal -->
+    <div class="modal fade" id="experienceModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">工作经历</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="experience-form">
+                        <input type="hidden" id="exp-id">
+                        <div class="mb-3">
+                            <label for="exp-position" class="form-label">职位</label>
+                            <input type="text" class="form-control" id="exp-position" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exp-organization" class="form-label">机构</label>
+                            <input type="text" class="form-control" id="exp-organization" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="exp-start" class="form-label">开始时间</label>
+                                    <input type="date" class="form-control" id="exp-start">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="exp-end" class="form-label">结束时间</label>
+                                    <input type="date" class="form-control" id="exp-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exp-location" class="form-label">地点</label>
+                            <input type="text" class="form-control" id="exp-location">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exp-description" class="form-label">工作描述</label>
+                            <textarea class="form-control" id="exp-description" rows="4"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exp-tags" class="form-label">标签</label>
+                            <input type="text" class="form-control" id="exp-tags" placeholder="多个标签请用逗号分隔，如：大厂,AI领域,核心团队">
+                            <div class="form-text">标签会在工作经历条目上显示</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveExperience()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education Modal -->
+    <div class="modal fade" id="educationModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">教育背景</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="education-form">
+                        <input type="hidden" id="edu-id">
+                        <div class="mb-3">
+                            <label for="edu-degree" class="form-label">学位</label>
+                            <input type="text" class="form-control" id="edu-degree" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edu-institution" class="form-label">院校</label>
+                            <input type="text" class="form-control" id="edu-institution" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edu-field" class="form-label">专业</label>
+                            <input type="text" class="form-control" id="edu-field">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="edu-start" class="form-label">入学年份</label>
+                                    <input type="number" class="form-control" id="edu-start">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="edu-end" class="form-label">毕业年份</label>
+                                    <input type="number" class="form-control" id="edu-end">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edu-description" class="form-label">描述</label>
+                            <textarea class="form-control" id="edu-description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edu-tags" class="form-label">标签</label>
+                            <input type="text" class="form-control" id="edu-tags" placeholder="多个标签请用逗号分隔，如：985,211,双一流">
+                            <div class="form-text">标签会在教育背景条目上显示</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveEducation()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Award Modal -->
+    <div class="modal fade" id="awardModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">荣誉奖项</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="award-form">
+                        <input type="hidden" id="award-id">
+                        <div class="mb-3">
+                            <label for="award-title" class="form-label">奖项名称</label>
+                            <input type="text" class="form-control" id="award-title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="award-organization" class="form-label">颁发机构</label>
+                            <input type="text" class="form-control" id="award-organization">
+                        </div>
+                        <div class="mb-3">
+                            <label for="award-year" class="form-label">年份</label>
+                            <input type="number" class="form-control" id="award-year">
+                        </div>
+                        <div class="mb-3">
+                            <label for="award-description" class="form-label">描述</label>
+                            <textarea class="form-control" id="award-description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="award-tags" class="form-label">标签</label>
+                            <input type="text" class="form-control" id="award-tags" placeholder="多个标签请用逗号分隔，如：国家级,优青,重大荣誉">
+                            <div class="form-text">标签会在奖项条目上显示</div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAward()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend Modal -->
+    <div class="modal fade" id="friendModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">友情链接</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="friend-form">
+                        <input type="hidden" id="friend-id">
+                        <div class="mb-3">
+                            <label for="friend-name" class="form-label">名称</label>
+                            <input type="text" class="form-control" id="friend-name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="friend-url" class="form-label">链接</label>
+                            <input type="url" class="form-control" id="friend-url" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="friend-description" class="form-label">描述</label>
+                            <textarea class="form-control" id="friend-description" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="friend-avatar" class="form-label">头像链接</label>
+                            <input type="url" class="form-control" id="friend-avatar">
+                        </div>
+                        <div class="mb-3">
+                            <label for="friend-order" class="form-label">排序</label>
+                            <input type="number" class="form-control" id="friend-order" value="0">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="friend-active" checked>
+                            <label class="form-check-label" for="friend-active">启用</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveFriend()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let isAuthenticated = false;
+        let currentUser = '';
+
+        // Utility functions
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function showAlert(message, type = 'success') {
+            // You can implement a toast notification system here
+            alert(message);
+        }
+
+        // API call helper
+        async function apiCall(url, method = 'GET', data = null) {
+            const options = {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            if (data) {
+                options.body = JSON.stringify(data);
+            }
+
+            try {
+                const response = await fetch(url, options);
+                const result = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(result.error || 'Request failed');
+                }
+                
+                return result;
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+
+        // Authentication functions
+        async function checkAuth() {
+            try {
+                const result = await apiCall('/api/check-auth');
+                if (result.authenticated) {
+                    isAuthenticated = true;
+                    currentUser = result.username;
+                    showAdminDashboard();
+                } else {
+                    showLoginForm();
+                }
+            } catch (error) {
+                showLoginForm();
+            }
+        }
+
+            async function login(username, password, captcha) {
+        try {
+            showLoading();
+            const result = await apiCall('/api/login', 'POST', { username, password, captcha });
+            isAuthenticated = true;
+            currentUser = result.user;
+            showAdminDashboard();
+            hideLoading();
+        } catch (error) {
+            hideLoading();
+            document.getElementById('login-error').querySelector('.alert').textContent = error.message || '登录失败';
+            document.getElementById('login-error').style.display = 'block';
+            // 登录失败后刷新验证码
+            refreshCaptcha();
+            document.getElementById('captcha').value = '';
+        }
+    }
+
+        async function logout() {
+            try {
+                await apiCall('/api/logout', 'POST');
+                isAuthenticated = false;
+                currentUser = '';
+                showLoginForm();
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
+        }
+
+        function showLoginForm() {
+            document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('admin-container').style.display = 'none';
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('admin-container').style.display = 'block';
+            document.getElementById('welcome-user').textContent = `欢迎，${currentUser}`;
+            loadDashboardData();
+        }
+
+        // Navigation functions
+        function switchSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            document.getElementById(`${sectionName}-section`).style.display = 'block';
+            
+            // Update navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionName}"]`).classList.add('active');
+            
+            // Update section title
+            const titles = {
+                'dashboard': '仪表板',
+                'profile': '个人信息',
+                'publications': '学术成果',
+                'projects': '项目经历',
+                'experience': '工作经历',
+                'education': '教育背景',
+                'awards': '荣誉奖项',
+                'friends': '友情链接',
+                'settings': '系统设置'
+            };
+            document.getElementById('section-title').textContent = titles[sectionName];
+            
+            // Load section data
+            loadSectionData(sectionName);
+        }
+
+        // Dashboard functions
+        async function loadDashboardData() {
+            try {
+                const [publications, projects, experience, awards] = await Promise.all([
+                    apiCall('/api/publications'),
+                    apiCall('/api/projects'),
+                    apiCall('/api/experience'),
+                    apiCall('/api/awards')
+                ]);
+                
+                document.getElementById('stats-publications').textContent = publications.length;
+                document.getElementById('stats-projects').textContent = projects.length;
+                document.getElementById('stats-experience').textContent = experience.length;
+                document.getElementById('stats-awards').textContent = awards.length;
+            } catch (error) {
+                console.error('Failed to load dashboard data:', error);
+            }
+        }
+
+        async function loadSectionData(sectionName) {
+            switch (sectionName) {
+                case 'profile':
+                    await loadProfileData();
+                    break;
+                case 'publications':
+                    await loadPublications();
+                    break;
+                case 'projects':
+                    await loadProjects();
+                    break;
+                case 'experience':
+                    await loadExperience();
+                    break;
+                case 'education':
+                    await loadEducation();
+                    break;
+                case 'awards':
+                    await loadAwards();
+                    break;
+                case 'friends':
+                    await loadFriends();
+                    break;
+                case 'settings':
+                    await loadSettings();
+                    break;
+            }
+        }
+
+        // Profile management
+        async function loadProfileData() {
+            try {
+                const profile = await apiCall('/api/profile');
+                
+                document.getElementById('profile-name').value = profile.name || '';
+                document.getElementById('profile-title').value = profile.title || '';
+                document.getElementById('profile-bio').value = profile.bio || '';
+                document.getElementById('profile-research').value = profile.research_interests || '';
+                document.getElementById('profile-email').value = profile.email || '';
+                document.getElementById('profile-phone').value = profile.phone || '';
+                document.getElementById('profile-address').value = profile.address || '';
+                document.getElementById('profile-website').value = profile.website || '';
+                document.getElementById('profile-github').value = profile.github || '';
+                document.getElementById('profile-linkedin').value = profile.linkedin || '';
+                document.getElementById('profile-orcid').value = profile.orcid || '';
+                
+                if (profile.avatar_url) {
+                    document.getElementById('avatar-preview').innerHTML = 
+                        `<img src="${profile.avatar_url}" class="preview-image" alt="头像预览">`;
+                }
+            } catch (error) {
+                console.error('Failed to load profile data:', error);
+            }
+        }
+
+        async function saveProfile() {
+            try {
+                const profileData = {
+                    name: document.getElementById('profile-name').value,
+                    title: document.getElementById('profile-title').value,
+                    bio: document.getElementById('profile-bio').value,
+                    research_interests: document.getElementById('profile-research').value,
+                    email: document.getElementById('profile-email').value,
+                    phone: document.getElementById('profile-phone').value,
+                    address: document.getElementById('profile-address').value,
+                    website: document.getElementById('profile-website').value,
+                    github: document.getElementById('profile-github').value,
+                    linkedin: document.getElementById('profile-linkedin').value,
+                    orcid: document.getElementById('profile-orcid').value
+                };
+                
+                showLoading();
+                await apiCall('/api/profile', 'PUT', profileData);
+                hideLoading();
+                showAlert('个人信息保存成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        // Publications management
+        async function loadPublications() {
+            try {
+                const publications = await apiCall('/api/publications');
+                const tbody = document.querySelector('#publications-table tbody');
+                
+                tbody.innerHTML = publications.map(pub => `
+                    <tr>
+                        <td>${pub.title}</td>
+                        <td>${pub.authors}</td>
+                        <td>${pub.journal || '-'}</td>
+                        <td>${pub.year || '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editPublication(${pub.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deletePublication(${pub.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load publications:', error);
+            }
+        }
+
+        function openPublicationModal(publication = null) {
+            if (publication) {
+                document.getElementById('pub-id').value = publication.id;
+                document.getElementById('pub-title').value = publication.title || '';
+                document.getElementById('pub-authors').value = publication.authors || '';
+                document.getElementById('pub-journal').value = publication.journal || '';
+                document.getElementById('pub-year').value = publication.year || '';
+                document.getElementById('pub-volume').value = publication.volume || '';
+                document.getElementById('pub-pages').value = publication.pages || '';
+                document.getElementById('pub-doi').value = publication.doi || '';
+                document.getElementById('pub-url').value = publication.url || '';
+                document.getElementById('pub-abstract').value = publication.abstract || '';
+                document.getElementById('pub-keywords').value = publication.keywords || '';
+                document.getElementById('pub-type').value = publication.type || 'journal';
+            } else {
+                document.getElementById('publication-form').reset();
+                document.getElementById('pub-id').value = '';
+            }
+        }
+
+        async function editPublication(id) {
+            try {
+                // In a real implementation, you'd fetch the specific publication
+                // For now, we'll reload all and find the one we need
+                const publications = await apiCall('/api/publications');
+                const publication = publications.find(p => p.id === id);
+                if (publication) {
+                    openPublicationModal(publication);
+                    new bootstrap.Modal(document.getElementById('publicationModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load publication for editing:', error);
+            }
+        }
+
+        async function savePublication() {
+            try {
+                const publicationData = {
+                    title: document.getElementById('pub-title').value,
+                    authors: document.getElementById('pub-authors').value,
+                    journal: document.getElementById('pub-journal').value,
+                    year: document.getElementById('pub-year').value ? parseInt(document.getElementById('pub-year').value) : null,
+                    volume: document.getElementById('pub-volume').value,
+                    pages: document.getElementById('pub-pages').value,
+                    doi: document.getElementById('pub-doi').value,
+                    url: document.getElementById('pub-url').value,
+                    abstract: document.getElementById('pub-abstract').value,
+                    keywords: document.getElementById('pub-keywords').value,
+                    type: document.getElementById('pub-type').value
+                };
+                
+                const id = document.getElementById('pub-id').value;
+                const url = id ? `/api/publications/${id}` : '/api/publications';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, publicationData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('publicationModal')).hide();
+                await loadPublications();
+                showAlert(id ? '论文更新成功！' : '论文添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deletePublication(id) {
+            if (confirm('确定要删除这篇论文吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/publications/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadPublications();
+                    showAlert('论文删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // Similar functions for Projects, Experience, Education, and Awards
+        // (Implementation follows the same pattern as Publications)
+
+        async function loadProjects() {
+            try {
+                const projects = await apiCall('/api/projects');
+                const tbody = document.querySelector('#projects-table tbody');
+                
+                tbody.innerHTML = projects.map(proj => `
+                    <tr>
+                        <td>${proj.title}</td>
+                        <td>${proj.role || '-'}</td>
+                        <td>${proj.start_date || '-'}</td>
+                        <td>${proj.status}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editProject(${proj.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteProject(${proj.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+            }
+        }
+
+        function openProjectModal(project = null) {
+            if (project) {
+                document.getElementById('proj-id').value = project.id;
+                document.getElementById('proj-title').value = project.title || '';
+                document.getElementById('proj-description').value = project.description || '';
+                document.getElementById('proj-detailed-description').value = project.detailed_description || '';
+                document.getElementById('proj-role').value = project.role || '';
+                document.getElementById('proj-start').value = project.start_date || '';
+                document.getElementById('proj-end').value = project.end_date || '';
+                document.getElementById('proj-tech').value = project.technologies || '';
+                document.getElementById('proj-url').value = project.url || '';
+                document.getElementById('proj-github').value = project.github_url || '';
+                document.getElementById('proj-status').value = project.status || 'completed';
+                document.getElementById('proj-tags').value = project.tags || '';
+            } else {
+                document.getElementById('project-form').reset();
+                document.getElementById('proj-id').value = '';
+            }
+        }
+
+        async function editProject(id) {
+            try {
+                const projects = await apiCall('/api/projects');
+                const project = projects.find(p => p.id === id);
+                if (project) {
+                    openProjectModal(project);
+                    new bootstrap.Modal(document.getElementById('projectModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load project for editing:', error);
+            }
+        }
+
+        async function saveProject() {
+            try {
+                const projectData = {
+                    title: document.getElementById('proj-title').value,
+                    description: document.getElementById('proj-description').value,
+                    detailed_description: document.getElementById('proj-detailed-description').value,
+                    role: document.getElementById('proj-role').value,
+                    start_date: document.getElementById('proj-start').value,
+                    end_date: document.getElementById('proj-end').value,
+                    technologies: document.getElementById('proj-tech').value,
+                    url: document.getElementById('proj-url').value,
+                    github_url: document.getElementById('proj-github').value,
+                    status: document.getElementById('proj-status').value,
+                    tags: document.getElementById('proj-tags').value
+                };
+                
+                const id = document.getElementById('proj-id').value;
+                const url = id ? `/api/projects/${id}` : '/api/projects';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, projectData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('projectModal')).hide();
+                await loadProjects();
+                showAlert(id ? '项目更新成功！' : '项目添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deleteProject(id) {
+            if (confirm('确定要删除这个项目吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/projects/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadProjects();
+                    showAlert('项目删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // Experience management
+        async function loadExperience() {
+            try {
+                const experience = await apiCall('/api/experience');
+                const tbody = document.querySelector('#experience-table tbody');
+                
+                tbody.innerHTML = experience.map(exp => `
+                    <tr>
+                        <td>${exp.position}</td>
+                        <td>${exp.organization}</td>
+                        <td>${exp.start_date || '-'}</td>
+                        <td>${exp.end_date || '至今'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editExperience(${exp.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteExperience(${exp.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load experience:', error);
+            }
+        }
+
+        function openExperienceModal(experience = null) {
+            if (experience) {
+                document.getElementById('exp-id').value = experience.id;
+                document.getElementById('exp-position').value = experience.position || '';
+                document.getElementById('exp-organization').value = experience.organization || '';
+                document.getElementById('exp-start').value = experience.start_date || '';
+                document.getElementById('exp-end').value = experience.end_date || '';
+                document.getElementById('exp-location').value = experience.location || '';
+                document.getElementById('exp-description').value = experience.description || '';
+                document.getElementById('exp-tags').value = experience.tags || '';
+            } else {
+                document.getElementById('experience-form').reset();
+                document.getElementById('exp-id').value = '';
+            }
+        }
+
+        async function editExperience(id) {
+            try {
+                const experience = await apiCall('/api/experience');
+                const exp = experience.find(e => e.id === id);
+                if (exp) {
+                    openExperienceModal(exp);
+                    new bootstrap.Modal(document.getElementById('experienceModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load experience for editing:', error);
+            }
+        }
+
+        async function saveExperience() {
+            try {
+                const experienceData = {
+                    position: document.getElementById('exp-position').value,
+                    organization: document.getElementById('exp-organization').value,
+                    start_date: document.getElementById('exp-start').value,
+                    end_date: document.getElementById('exp-end').value,
+                    location: document.getElementById('exp-location').value,
+                    description: document.getElementById('exp-description').value,
+                    tags: document.getElementById('exp-tags').value
+                };
+                
+                const id = document.getElementById('exp-id').value;
+                const url = id ? `/api/experience/${id}` : '/api/experience';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, experienceData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('experienceModal')).hide();
+                await loadExperience();
+                showAlert(id ? '工作经历更新成功！' : '工作经历添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deleteExperience(id) {
+            if (confirm('确定要删除这条工作经历吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/experience/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadExperience();
+                    showAlert('工作经历删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // Education management
+        async function loadEducation() {
+            try {
+                const education = await apiCall('/api/education');
+                const tbody = document.querySelector('#education-table tbody');
+                
+                tbody.innerHTML = education.map(edu => `
+                    <tr>
+                        <td>${edu.degree}</td>
+                        <td>${edu.institution}</td>
+                        <td>${edu.field || '-'}</td>
+                        <td>${edu.start_year || '-'} - ${edu.end_year || '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editEducation(${edu.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteEducation(${edu.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load education:', error);
+            }
+        }
+
+        function openEducationModal(education = null) {
+            if (education) {
+                document.getElementById('edu-id').value = education.id;
+                document.getElementById('edu-degree').value = education.degree || '';
+                document.getElementById('edu-institution').value = education.institution || '';
+                document.getElementById('edu-field').value = education.field || '';
+                document.getElementById('edu-start').value = education.start_year || '';
+                document.getElementById('edu-end').value = education.end_year || '';
+                document.getElementById('edu-description').value = education.description || '';
+                document.getElementById('edu-tags').value = education.tags || '';
+            } else {
+                document.getElementById('education-form').reset();
+                document.getElementById('edu-id').value = '';
+            }
+        }
+
+        async function editEducation(id) {
+            try {
+                const education = await apiCall('/api/education');
+                const edu = education.find(e => e.id === id);
+                if (edu) {
+                    openEducationModal(edu);
+                    new bootstrap.Modal(document.getElementById('educationModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load education for editing:', error);
+            }
+        }
+
+        async function saveEducation() {
+            try {
+                const educationData = {
+                    degree: document.getElementById('edu-degree').value,
+                    institution: document.getElementById('edu-institution').value,
+                    field: document.getElementById('edu-field').value,
+                    start_year: document.getElementById('edu-start').value ? parseInt(document.getElementById('edu-start').value) : null,
+                    end_year: document.getElementById('edu-end').value ? parseInt(document.getElementById('edu-end').value) : null,
+                    description: document.getElementById('edu-description').value,
+                    tags: document.getElementById('edu-tags').value
+                };
+                
+                const id = document.getElementById('edu-id').value;
+                const url = id ? `/api/education/${id}` : '/api/education';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, educationData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('educationModal')).hide();
+                await loadEducation();
+                showAlert(id ? '教育背景更新成功！' : '教育背景添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deleteEducation(id) {
+            if (confirm('确定要删除这条教育背景吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/education/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadEducation();
+                    showAlert('教育背景删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // Awards management
+        async function loadAwards() {
+            try {
+                const awards = await apiCall('/api/awards');
+                const tbody = document.querySelector('#awards-table tbody');
+                
+                tbody.innerHTML = awards.map(award => `
+                    <tr>
+                        <td>${award.title}</td>
+                        <td>${award.organization || '-'}</td>
+                        <td>${award.year || '-'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editAward(${award.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteAward(${award.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load awards:', error);
+            }
+        }
+
+        function openAwardModal(award = null) {
+            if (award) {
+                document.getElementById('award-id').value = award.id;
+                document.getElementById('award-title').value = award.title || '';
+                document.getElementById('award-organization').value = award.organization || '';
+                document.getElementById('award-year').value = award.year || '';
+                document.getElementById('award-description').value = award.description || '';
+                document.getElementById('award-tags').value = award.tags || '';
+            } else {
+                document.getElementById('award-form').reset();
+                document.getElementById('award-id').value = '';
+            }
+        }
+
+        async function editAward(id) {
+            try {
+                const awards = await apiCall('/api/awards');
+                const award = awards.find(a => a.id === id);
+                if (award) {
+                    openAwardModal(award);
+                    new bootstrap.Modal(document.getElementById('awardModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load award for editing:', error);
+            }
+        }
+
+        async function saveAward() {
+            try {
+                const awardData = {
+                    title: document.getElementById('award-title').value,
+                    organization: document.getElementById('award-organization').value,
+                    year: document.getElementById('award-year').value ? parseInt(document.getElementById('award-year').value) : null,
+                    description: document.getElementById('award-description').value,
+                    tags: document.getElementById('award-tags').value
+                };
+                
+                const id = document.getElementById('award-id').value;
+                const url = id ? `/api/awards/${id}` : '/api/awards';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, awardData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('awardModal')).hide();
+                await loadAwards();
+                showAlert(id ? '奖项更新成功！' : '奖项添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deleteAward(id) {
+            if (confirm('确定要删除这个奖项吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/awards/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadAwards();
+                    showAlert('奖项删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // 验证码相关函数
+        async function loadCaptcha() {
+            try {
+                const response = await fetch('/api/captcha');
+                const captcha = await response.json();
+                
+                if (captcha.type === 'image') {
+                    document.getElementById('captcha-image').src = captcha.data;
+                    document.getElementById('captcha-image').style.display = 'block';
+                    document.getElementById('captcha-text').style.display = 'none';
+                } else {
+                    document.getElementById('captcha-text').textContent = captcha.text;
+                    document.getElementById('captcha-image').style.display = 'none';
+                    document.getElementById('captcha-text').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Failed to load captcha:', error);
+            }
+        }
+
+        function refreshCaptcha() {
+            loadCaptcha();
+        }
+
+        // Event listeners
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const captcha = document.getElementById('captcha').value;
+            login(username, password, captcha);
+        });
+
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveProfile();
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', logout);
+
+        // Navigation event listeners
+        document.querySelectorAll('[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                switchSection(section);
+            });
+        });
+
+        // Friends management
+        async function loadFriends() {
+            try {
+                const friends = await apiCall('/api/friends');
+                const tbody = document.querySelector('#friends-table tbody');
+                
+                tbody.innerHTML = friends.map(friend => `
+                    <tr>
+                        <td>${friend.name}</td>
+                        <td><a href="${friend.url}" target="_blank">${friend.url}</a></td>
+                        <td>${friend.description || '-'}</td>
+                        <td>${friend.is_active ? '<span class="badge bg-success">启用</span>' : '<span class="badge bg-secondary">禁用</span>'}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning me-1" onclick="editFriend(${friend.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteFriend(${friend.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load friends:', error);
+            }
+        }
+
+        function openFriendModal(friend = null) {
+            if (friend) {
+                document.getElementById('friend-id').value = friend.id;
+                document.getElementById('friend-name').value = friend.name || '';
+                document.getElementById('friend-url').value = friend.url || '';
+                document.getElementById('friend-description').value = friend.description || '';
+                document.getElementById('friend-avatar').value = friend.avatar || '';
+                document.getElementById('friend-order').value = friend.order_index || 0;
+                document.getElementById('friend-active').checked = friend.is_active;
+            } else {
+                document.getElementById('friend-form').reset();
+                document.getElementById('friend-id').value = '';
+                document.getElementById('friend-active').checked = true;
+            }
+        }
+
+        async function editFriend(id) {
+            try {
+                const friends = await apiCall('/api/friends');
+                const friend = friends.find(f => f.id === id);
+                if (friend) {
+                    openFriendModal(friend);
+                    new bootstrap.Modal(document.getElementById('friendModal')).show();
+                }
+            } catch (error) {
+                console.error('Failed to load friend for editing:', error);
+            }
+        }
+
+        async function saveFriend() {
+            try {
+                const friendData = {
+                    name: document.getElementById('friend-name').value,
+                    url: document.getElementById('friend-url').value,
+                    description: document.getElementById('friend-description').value,
+                    avatar: document.getElementById('friend-avatar').value,
+                    order_index: parseInt(document.getElementById('friend-order').value) || 0,
+                    is_active: document.getElementById('friend-active').checked ? 1 : 0
+                };
+                
+                const id = document.getElementById('friend-id').value;
+                const url = id ? `/api/friends/${id}` : '/api/friends';
+                const method = id ? 'PUT' : 'POST';
+                
+                showLoading();
+                await apiCall(url, method, friendData);
+                hideLoading();
+                
+                bootstrap.Modal.getInstance(document.getElementById('friendModal')).hide();
+                await loadFriends();
+                showAlert(id ? '友情链接更新成功！' : '友情链接添加成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        async function deleteFriend(id) {
+            if (confirm('确定要删除这个友情链接吗？')) {
+                try {
+                    showLoading();
+                    await apiCall(`/api/friends/${id}`, 'DELETE');
+                    hideLoading();
+                    await loadFriends();
+                    showAlert('友情链接删除成功！');
+                } catch (error) {
+                    hideLoading();
+                    showAlert('删除失败：' + error.message, 'error');
+                }
+            }
+        }
+
+        // Settings management
+        async function loadSettings() {
+            try {
+                const settings = await apiCall('/api/settings');
+                
+                document.getElementById('site-title').value = settings.site_title || '';
+                document.getElementById('site-description').value = settings.site_description || '';
+                document.getElementById('keywords').value = settings.keywords || '';
+                document.getElementById('beian').value = settings.beian || '';
+                document.getElementById('analytics-code').value = settings.analytics_code || '';
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            }
+        }
+
+        async function saveSettings() {
+            try {
+                const settingsData = {
+                    site_title: document.getElementById('site-title').value,
+                    site_description: document.getElementById('site-description').value,
+                    keywords: document.getElementById('keywords').value,
+                    beian: document.getElementById('beian').value,
+                    analytics_code: document.getElementById('analytics-code').value
+                };
+                
+                showLoading();
+                await apiCall('/api/settings', 'PUT', settingsData);
+                hideLoading();
+                showAlert('系统设置保存成功！');
+            } catch (error) {
+                hideLoading();
+                showAlert('保存失败：' + error.message, 'error');
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载验证码
+            loadCaptcha();
+            
+            // 设置表单提交事件
+            document.getElementById('settings-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveSettings();
+            });
+            
+            checkAuth();
+        });
+    </script>
+</body>
+</html> 

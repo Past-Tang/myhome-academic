@@ -1,0 +1,332 @@
+/* 学术风格专用CSS */
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .main-container {
+        max-width: 100%;
+        margin: 0;
+        box-shadow: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 280px;
+    }
+    
+    .content-section {
+        padding: 30px 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .sidebar .profile-section {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        margin-bottom: 20px;
+    }
+    
+    .sidebar .profile-avatar {
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+        margin-bottom: 0;
+    }
+    
+    .sidebar .navigation {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .sidebar .nav-item {
+        margin-bottom: 0;
+    }
+    
+    .sidebar .nav-link {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .content-section {
+        padding: 20px;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .friends-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer {
+        padding: 20px;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar .profile-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .sidebar .profile-avatar {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    .sidebar .navigation {
+        flex-direction: column;
+    }
+    
+    .content-section {
+        padding: 15px;
+    }
+    
+    .academic-paper {
+        padding: 20px;
+    }
+    
+    .timeline-item {
+        padding: 15px;
+        margin-left: 10px;
+    }
+    
+    .timeline::before {
+        left: 10px;
+    }
+    
+    .timeline-item::before {
+        left: -18px;
+    }
+}
+
+/* 打印样式 */
+@media print {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        background: white !important;
+        color: black !important;
+        padding: 20px;
+    }
+    
+    .sidebar .navigation,
+    .sidebar .contact-info {
+        display: none;
+    }
+    
+    .main-content {
+        background: white;
+    }
+    
+    .section-header {
+        page-break-after: avoid;
+    }
+    
+    .academic-paper,
+    .project-card,
+    .timeline-item {
+        page-break-inside: avoid;
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+    }
+    
+    .footer {
+        display: none;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .sidebar {
+        background: #000;
+        color: #fff;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+        background: #fff;
+        color: #000;
+    }
+    
+    .academic-paper,
+    .project-card,
+    .timeline-item {
+        border: 2px solid #000;
+    }
+}
+
+/* 减少动画效果（accessibility） */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* 学术论文引用样式 */
+.citation-style {
+    font-family: 'Times New Roman', serif;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.citation-authors {
+    font-weight: normal;
+}
+
+.citation-title {
+    font-style: italic;
+}
+
+.citation-venue {
+    font-weight: bold;
+}
+
+/* 数学公式支持 */
+.math-inline {
+    font-family: 'Times New Roman', serif;
+    font-style: italic;
+}
+
+.math-block {
+    text-align: center;
+    margin: 20px 0;
+    font-family: 'Times New Roman', serif;
+}
+
+/* 学术图表样式 */
+.academic-figure {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.academic-figure img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--border-color);
+}
+
+.academic-caption {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    margin-top: 10px;
+    font-style: italic;
+}
+
+/* 参考文献列表 */
+.references {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.references ol {
+    padding-left: 20px;
+}
+
+.references li {
+    margin-bottom: 8px;
+}
+
+/* 学术标签样式 */
+.academic-tag {
+    background: linear-gradient(135deg, var(--academic-blue), var(--primary-color));
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin: 2px;
+    display: inline-block;
+}
+
+/* 研究领域标签 */
+.research-area-tag {
+    background: var(--accent-color);
+    color: var(--academic-blue);
+    border: 1px solid var(--academic-blue);
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin: 2px;
+    display: inline-block;
+}
+
+/* 加载动画优化 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--accent-color);
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: academic-spin 1s linear infinite;
+}
+
+@keyframes academic-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --primary-color: #3b82f6;
+        --academic-blue: #60a5fa;
+        --text-color: #f1f5f9;
+        --secondary-color: #cbd5e1;
+        --light-gray: #1e293b;
+        --border-color: #374151;
+        --paper-bg: #0f172a;
+        --academic-gray: #1f2937;
+    }
+    
+    .main-container {
+        background: var(--paper-bg);
+    }
+    
+    .academic-paper,
+    .project-card,
+    .timeline-item,
+    .friend-link {
+        background: #1e293b;
+        border-color: var(--border-color);
+    }
+    
+    .sidebar {
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+    }
+} 

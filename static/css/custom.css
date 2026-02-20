@@ -1,0 +1,141 @@
+/* 自定义样式文件 */
+/* 用于扩展和覆盖基础样式 */
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 表格响应式优化 */
+@media (max-width: 768px) {
+    .table-responsive {
+        border: none;
+    }
+    
+    .table td {
+        font-size: 0.875rem;
+        padding: 0.5rem;
+    }
+}
+
+/* 卡片悬停效果增强 */
+.card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+/* 按钮动画 */
+.btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* 输入框聚焦效果 */
+.form-control:focus,
+.form-select:focus {
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 加载动画优化 */
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 模态框动画 */
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* 导航栏透明度 */
+.navbar {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* 打印样式 */
+@media print {
+    .navbar,
+    .btn,
+    .modal {
+        display: none !important;
+    }
+    
+    .hero-section {
+        padding: 20px 0 !important;
+    }
+    
+    .section {
+        padding: 20px 0 !important;
+    }
+}
+
+/* 可访问性改进 */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+}
+
+/* 深色模式支持（可选） */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-color: #f8fafc;
+        --secondary-color: #cbd5e1;
+        --light-gray: #1e293b;
+        --border-color: #374151;
+    }
+}
+
+/* 图片懒加载优化 */
+.profile-avatar {
+    object-fit: cover;
+    background-color: #f3f4f6;
+}
+
+/* 文本选择样式 */
+::selection {
+    background-color: rgba(37, 99, 235, 0.3);
+    color: inherit;
+}
+
+::-moz-selection {
+    background-color: rgba(37, 99, 235, 0.3);
+    color: inherit;
+} 

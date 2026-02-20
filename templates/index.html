@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学术主页</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/minimal.css" rel="stylesheet">
+</head>
+<body>
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="profile-section">
+                <div class="loading" id="profile-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="profile-content" style="display: none;">
+                    <img id="profile-avatar" src="/static/images/default-avatar.svg" alt="头像" class="profile-avatar">
+                    <h1 id="profile-name" class="profile-name">Dr. Academic</h1>
+                    <p id="profile-title" class="profile-title">Research Scientist</p>
+                    <div id="profile-research" class="profile-research">
+                        <strong>研究方向：</strong><br>
+                        <span id="research-interests">机器学习，数据科学，人工智能</span>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="navigation">
+                <div class="nav-item"><a class="nav-link active" href="#home"><i class="fas fa-home"></i> 首页</a></div>
+                <div class="nav-item"><a class="nav-link" href="#publications"><i class="fas fa-book"></i> 学术成果</a></div>
+                <div class="nav-item"><a class="nav-link" href="#projects"><i class="fas fa-project-diagram"></i> 项目经历</a></div>
+                <div class="nav-item"><a class="nav-link" href="#experience"><i class="fas fa-briefcase"></i> 工作经历</a></div>
+                <div class="nav-item"><a class="nav-link" href="#education"><i class="fas fa-graduation-cap"></i> 教育背景</a></div>
+                <div class="nav-item"><a class="nav-link" href="#awards"><i class="fas fa-trophy"></i> 荣誉奖项</a></div>
+                <div class="nav-item"><a class="nav-link" href="#friends"><i class="fas fa-link"></i> 友情链接</a></div>
+                <div class="nav-item"><a class="nav-link" href="/admin"><i class="fas fa-cog"></i> 管理后台</a></div>
+            </nav>
+
+            <div class="contact-info">
+                <div id="contact-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="contact-content" style="display: none;">
+                    <!-- Contact info will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <section id="home" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        个人简介
+                    </h2>
+                </div>
+                <div class="loading" id="bio-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="bio-content" style="display: none;">
+                    <div id="profile-bio" class="markdown-content">
+                        <p>欢迎访问我的学术主页</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="publications" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-book-open"></i>
+                        学术成果
+                    </h2>
+                    <p class="section-subtitle">已发表的学术论文和研究成果</p>
+                </div>
+                <div class="loading" id="publications-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="publications-content" style="display: none;">
+                    <!-- Publications will be loaded here -->
+                </div>
+            </section>
+
+            <section id="projects" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-laptop-code"></i>
+                        项目经历
+                    </h2>
+                    <p class="section-subtitle">参与和主导的研究项目</p>
+                </div>
+                <div class="loading" id="projects-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="projects-content" style="display: none;">
+                    <div class="project-grid">
+                        <!-- Projects will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="experience" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-building"></i>
+                        工作经历
+                    </h2>
+                    <p class="section-subtitle">职业发展历程</p>
+                </div>
+                <div class="loading" id="experience-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="experience-content" style="display: none;">
+                    <div class="timeline">
+                        <!-- Experience will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-university"></i>
+                        教育背景
+                    </h2>
+                    <p class="section-subtitle">学习经历与学术资格</p>
+                </div>
+                <div class="loading" id="education-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="education-content" style="display: none;">
+                    <div class="timeline">
+                        <!-- Education will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="awards" class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-award"></i>
+                        荣誉奖项
+                    </h2>
+                    <p class="section-subtitle">获得的荣誉与奖励</p>
+                </div>
+                <div class="loading" id="awards-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="awards-content" style="display: none;">
+                    <div class="timeline">
+                        <!-- Awards will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="friends" class="content-section friends-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-globe"></i>
+                        友情链接
+                    </h2>
+                    <p class="section-subtitle">学术合作伙伴和友好网站</p>
+                </div>
+                <div class="loading" id="friends-loading">
+                    <div class="spinner"></div>
+                </div>
+                <div id="friends-content" style="display: none;">
+                    <div class="friends-grid">
+                        <!-- Friends will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 页脚 -->
+            <footer class="footer">
+                <div class="footer-content">
+                    <div class="footer-links">
+                        <a href="#home">首页</a>
+                        <a href="#publications">学术成果</a>
+                        <a href="#projects">项目</a>
+                        <a href="/admin">管理</a>
+                    </div>
+                    <div class="footer-info" id="beian-info">
+                        <!-- 备案信息将在这里加载 -->
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script>
+        // 渲染Markdown
+        function renderMarkdown(text) {
+            if (!text) return '';
+            return marked.parse(text);
+        }
+
+        // API调用函数
+        async function fetchAPI(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Network response was not ok');
+                return await response.json();
+            } catch (error) {
+                console.error('Fetch error:', error);
+                return null;
+            }
+        }
+
+        // 加载个人信息
+        async function loadProfile() {
+            const profile = await fetchAPI('/api/profile');
+            if (profile) {
+                // 更新侧边栏的个人信息
+                const profileName = document.getElementById('profile-name');
+                const profileTitle = document.getElementById('profile-title');
+                const profileAvatar = document.getElementById('profile-avatar');
+                const researchInterests = document.getElementById('research-interests');
+                
+                if (profileName) profileName.textContent = profile.name || 'Dr. Academic';
+                if (profileTitle) profileTitle.textContent = profile.title || 'Research Scientist';
+                if (researchInterests) researchInterests.textContent = profile.research_interests || '机器学习，数据科学，人工智能';
+                
+                if (profileAvatar && profile.avatar_url) {
+                    profileAvatar.src = profile.avatar_url;
+                }
+            }
+            
+            // 显示侧边栏内容
+            const profileLoading = document.getElementById('profile-loading');
+            const profileContent = document.getElementById('profile-content');
+            
+            if (profileLoading) profileLoading.style.display = 'none';
+            if (profileContent) profileContent.style.display = 'block';
+        }
+
+        // 加载个人简介
+        async function loadBio() {
+            const profile = await fetchAPI('/api/profile');
+            if (profile) {
+                document.getElementById('profile-bio').innerHTML = renderMarkdown(profile.bio) || '<p>欢迎访问我的学术主页</p>';
+            }
+            
+            document.getElementById('bio-loading').style.display = 'none';
+            document.getElementById('bio-content').style.display = 'block';
+        }
+
+        // 加载学术成果
+        async function loadPublications() {
+            const publications = await fetchAPI('/api/publications');
+            if (publications) {
+                const html = publications.map(pub => `
+                    <div class="academic-paper">
+                        <h3 class="paper-title">${pub.title}</h3>
+                        <div class="paper-authors">${pub.authors}</div>
+                        <div class="paper-venue">${pub.venue} (${pub.year})</div>
+                        <div class="paper-abstract">${pub.abstract || ''}</div>
+                        <div class="paper-links">
+                            ${pub.url ? `<a href="${pub.url}" target="_blank"><i class="fas fa-external-link-alt"></i> 查看论文</a>` : ''}
+                            ${pub.doi ? `<a href="${pub.doi}" target="_blank"><i class="fas fa-link"></i> DOI</a>` : ''}
+                        </div>
+                        <span class="paper-type">${pub.type}</span>
+                    </div>
+                `).join('');
+                
+                document.getElementById('publications-content').innerHTML = html;
+            }
+            
+            document.getElementById('publications-loading').style.display = 'none';
+            document.getElementById('publications-content').style.display = 'block';
+        }
+
+        // 加载项目经历
+        async function loadProjects() {
+            const projects = await fetchAPI('/api/projects');
+            if (projects) {
+                const html = projects.map(project => `
+                    <div class="project-card" onclick="showProjectDetail(${project.id})" style="cursor: pointer;">
+                        <h3 class="project-title">${project.title}</h3>
+                        <div class="project-role">${project.role}</div>
+                        <div class="project-description">${renderMarkdown(project.description)}</div>
+                        <div class="project-tech">
+                            ${project.technologies ? project.technologies.split(',').map(tech => `<span class="tech-tag">${tech.trim()}</span>`).join('') : ''}
+                        </div>
+                        ${project.tags ? `<div class="project-tags">
+                            ${project.tags.split(',').map(tag => `<span class="project-tag">${tag.trim()}</span>`).join('')}
+                        </div>` : ''}
+                        <div class="project-links">
+                            ${project.url ? `<a href="${project.url}" target="_blank" onclick="event.stopPropagation()"><i class="fas fa-external-link-alt"></i> 查看项目</a>` : ''}
+                            ${project.github_url ? `<a href="${project.github_url}" target="_blank" onclick="event.stopPropagation()"><i class="fab fa-github"></i> GitHub</a>` : ''}
+                        </div>
+                        <div class="project-detail-hint">
+                            <i class="fas fa-info-circle"></i> 点击查看详情
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.querySelector('#projects-content .project-grid').innerHTML = html;
+            }
+            
+            document.getElementById('projects-loading').style.display = 'none';
+            document.getElementById('projects-content').style.display = 'block';
+        }
+
+        // 显示项目详情
+        async function showProjectDetail(projectId) {
+            try {
+                const projects = await fetchAPI('/api/projects');
+                const project = projects.find(p => p.id === projectId);
+                
+                if (project) {
+                    document.getElementById('projectDetailTitle').textContent = project.title;
+                    
+                    // 渲染详细描述，如果没有详细描述则显示简短描述
+                    const detailContent = project.detailed_description || project.description || '暂无详细介绍';
+                    document.getElementById('projectDetailContent').innerHTML = renderMarkdown(detailContent);
+                    
+                    // 显示项目链接
+                    const linksHtml = `
+                        <div class="d-flex gap-2 flex-wrap">
+                            ${project.url ? `<a href="${project.url}" target="_blank" class="btn btn-primary btn-sm"><i class="fas fa-external-link-alt"></i> 查看项目</a>` : ''}
+                            ${project.github_url ? `<a href="${project.github_url}" target="_blank" class="btn btn-dark btn-sm"><i class="fab fa-github"></i> GitHub</a>` : ''}
+                            ${project.technologies ? `<div class="ms-auto"><small class="text-muted">技术栈：${project.technologies}</small></div>` : ''}
+                        </div>
+                    `;
+                    document.getElementById('projectDetailLinks').innerHTML = linksHtml;
+                    
+                    // 显示弹出层
+                    const modal = new bootstrap.Modal(document.getElementById('projectDetailModal'));
+                    modal.show();
+                }
+            } catch (error) {
+                console.error('Failed to load project details:', error);
+            }
+        }
+
+        // 加载工作经历
+        async function loadExperience() {
+            const experiences = await fetchAPI('/api/experience');
+            if (experiences) {
+                const html = experiences.map(exp => `
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">${exp.position}</h3>
+                        <div class="timeline-subtitle">${exp.organization}</div>
+                        <div class="timeline-period">${formatDate(exp.start_date)} - ${exp.end_date ? formatDate(exp.end_date) : '至今'}</div>
+                        ${exp.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${exp.location}</div>` : ''}
+                        <div class="timeline-description">${renderMarkdown(exp.description)}</div>
+                        ${exp.tags ? `<div class="timeline-tags">
+                            ${exp.tags.split(',').map(tag => `<span class="timeline-tag">${tag.trim()}</span>`).join('')}
+                        </div>` : ''}
+                    </div>
+                `).join('');
+                
+                document.querySelector('#experience-content .timeline').innerHTML = html;
+            }
+            
+            document.getElementById('experience-loading').style.display = 'none';
+            document.getElementById('experience-content').style.display = 'block';
+        }
+
+        // 加载教育背景
+        async function loadEducation() {
+            const educations = await fetchAPI('/api/education');
+            if (educations) {
+                const html = educations.map(edu => `
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">${edu.degree}</h3>
+                        <div class="timeline-subtitle">${edu.institution}</div>
+                        <div class="timeline-period">${edu.start_year || ''} - ${edu.end_year || ''}</div>
+                        ${edu.field ? `<div class="timeline-field"><i class="fas fa-graduation-cap"></i> ${edu.field}</div>` : ''}
+                        <div class="timeline-description">${renderMarkdown(edu.description)}</div>
+                        ${edu.tags ? `<div class="timeline-tags">
+                            ${edu.tags.split(',').map(tag => `<span class="timeline-tag education-tag">${tag.trim()}</span>`).join('')}
+                        </div>` : ''}
+                    </div>
+                `).join('');
+                
+                document.querySelector('#education-content .timeline').innerHTML = html;
+            }
+            
+            document.getElementById('education-loading').style.display = 'none';
+            document.getElementById('education-content').style.display = 'block';
+        }
+
+        // 加载荣誉奖项
+        async function loadAwards() {
+            const awards = await fetchAPI('/api/awards');
+            if (awards) {
+                const html = awards.map(award => `
+                    <div class="timeline-item">
+                        <h3 class="timeline-title">${award.title}</h3>
+                        <div class="timeline-subtitle">${award.organization}</div>
+                        <div class="timeline-period">${award.year}</div>
+                        <div class="timeline-description">${renderMarkdown(award.description)}</div>
+                        ${award.tags ? `<div class="timeline-tags">
+                            ${award.tags.split(',').map(tag => `<span class="timeline-tag award-tag">${tag.trim()}</span>`).join('')}
+                        </div>` : ''}
+                    </div>
+                `).join('');
+                
+                document.querySelector('#awards-content .timeline').innerHTML = html;
+            }
+            
+            document.getElementById('awards-loading').style.display = 'none';
+            document.getElementById('awards-content').style.display = 'block';
+        }
+
+        // 加载友情链接
+        async function loadFriends() {
+            const friends = await fetchAPI('/api/friends');
+            if (friends) {
+                const html = friends.map(friend => `
+                    <a href="${friend.url}" target="_blank" class="friend-link">
+                        <img src="${friend.avatar || '/static/images/default-avatar.svg'}" alt="${friend.name}" class="friend-avatar">
+                        <div class="friend-info">
+                            <h4>${friend.name}</h4>
+                            <p>${friend.description || ''}</p>
+                        </div>
+                    </a>
+                `).join('');
+                
+                document.querySelector('#friends-content .friends-grid').innerHTML = html;
+            }
+            
+            document.getElementById('friends-loading').style.display = 'none';
+            document.getElementById('friends-content').style.display = 'block';
+        }
+
+        // 加载联系信息（用于侧边栏）
+        async function loadContact() {
+            const profile = await fetchAPI('/api/profile');
+            if (profile) {
+                let contactHTML = '';
+                
+                if (profile.email) {
+                    contactHTML += `
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:${profile.email}">${profile.email}</a>
+                        </div>
+                    `;
+                }
+                
+                if (profile.website) {
+                    contactHTML += `
+                        <div class="contact-item">
+                            <i class="fas fa-globe"></i>
+                            <a href="${profile.website}" target="_blank">个人网站</a>
+                        </div>
+                    `;
+                }
+                
+                if (profile.github) {
+                    contactHTML += `
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <a href="${profile.github}" target="_blank">GitHub</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('contact-content').innerHTML = contactHTML;
+            }
+            
+            document.getElementById('contact-loading').style.display = 'none';
+            document.getElementById('contact-content').style.display = 'block';
+        }
+
+        // 加载备案信息
+        async function loadBeian() {
+            const settings = await fetchAPI('/api/settings');
+            if (settings && settings.beian) {
+                document.getElementById('beian-info').textContent = settings.beian;
+            }
+        }
+
+        // 页面导航
+        function switchSection(sectionId) {
+            // 隐藏所有section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // 显示目标section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const targetLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
+            if (targetLink) {
+                targetLink.classList.add('active');
+            }
+        }
+
+        // 日期格式化函数
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long' });
+        }
+
+        // 导航点击处理
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('.nav-link[href^="#"]')) {
+                e.preventDefault();
+                const sectionId = e.target.getAttribute('href').substring(1);
+                switchSection(sectionId);
+                
+                // 更新URL
+                history.pushState(null, null, `#${sectionId}`);
+            }
+        });
+
+        // 处理浏览器后退/前进
+        window.addEventListener('popstate', function() {
+            const hash = window.location.hash.substring(1) || 'home';
+            switchSection(hash);
+        });
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+            loadBio();
+            loadPublications();
+            loadProjects();
+            loadExperience();
+            loadEducation();
+            loadAwards();
+            loadFriends();
+            loadContact();
+            loadBeian();
+            
+            // 根据URL hash初始化页面
+            const currentSection = window.location.hash.substring(1) || 'home';
+            switchSection(currentSection);
+        });
+            </script>
+
+        <!-- 项目详情弹出层 -->
+        <div class="modal fade" id="projectDetailModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="projectDetailTitle">项目详情</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="projectDetailContent" class="markdown-content">
+                            <!-- 项目详细内容将在这里显示 -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div id="projectDetailLinks" class="project-detail-links">
+                            <!-- 项目链接将在这里显示 -->
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html> 
